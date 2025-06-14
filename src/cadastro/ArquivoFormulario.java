@@ -31,17 +31,37 @@ public class ArquivoFormulario {
                 String linha;
                 int i = 0;
                 while ((linha = bf.readLine()) != null && i < 9){
-                    System.out.print(linha);
                     boolean verify = false;
+                    final String naoinformado = "NÃO INFORMADO";
                     switch (i){
                         case 0:
                             while (!verify){
-                                respostas[i] = scanner.next();
-                                respostas[i].trim().replaceAll(" +", " ");
-                                String[] partes = respostas[i].split(" ");
+                                verify = true;
+                                System.out.print(linha);
+                                respostas[i] = scanner.nextLine();
+                                respostas[i] = respostas[i].trim().replaceAll(" +", " ");
+                                if (respostas[i] == ""){
+                                    respostas[i] = naoinformado;
+                                    continue;
+                                }
+                                for (int j = 0; j < respostas[0].length(); j++){
+                                    if ((respostas[i].charAt(j) < 'a' || respostas[i].charAt(j) > 'z') && (respostas[i].charAt(j) < 'A'
+                                            || respostas[i].charAt(j) > 'Z') && (respostas[i].charAt(j) != ' ')){
+                                        verify = false;
+                                    }
+                                }
+                                String[] partes = respostas[i].toLowerCase().split(" ");
                                 if (partes.length < 2 || partes[0].isEmpty() || partes[1].isEmpty()){
-                                    System.out.print(linha);
-                                    respostas[i] = scanner.next();
+                                    verify = false;
+                                }
+                                if (verify && respostas[i] != naoinformado){
+                                    StringBuilder sb = new StringBuilder();
+                                    for (String parte : partes){
+                                        if (!parte.isEmpty()){
+                                            sb.append(Character.toUpperCase(parte.charAt(0))).append(parte.substring(1, parte.length())).append(" ");
+                                        }
+                                    }
+                                    respostas[i] = sb.toString().trim();
                                 }
                             }
                     }
