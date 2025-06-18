@@ -1,5 +1,7 @@
 package cadastro;
 
+import pet.Pet;
+
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -31,7 +33,8 @@ public class MenuInicial {
         }
         switch (option){
             case 1:
-                arquivoFormulario.printArquivoFormulario();
+                String[] ans = arquivoFormulario.printArquivoFormulario();
+                Pet pet = new Pet(ans[0],ans[1],ans[2], new String[]{ans[3],ans[4],ans[5]},Double.parseDouble(ans[6]),Double.parseDouble(ans[7]),ans[8]);
         }
 
     }
