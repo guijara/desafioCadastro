@@ -15,7 +15,7 @@ public class ArquivoFormulario {
             file.createNewFile();
             boolean exists = file.exists();
             try (FileWriter fw = new FileWriter(file)){
-                fw.write("1 - Qual o nome e sobrenome do pet?\n:  " +
+                fw.write("1 - Qual o nome e sobrenome do pet?:  " +
                         "2 - Qual o tipo do pet (Cachorro/Gato)?\n:  " +
                         "3 - Qual o sexo do animal (Macho/Femea)?\n:  " +
                         "4 - Qual endereço que ele foi encontrado - 4.1 - (Cidade)?\n:  " +
@@ -43,7 +43,7 @@ public class ArquivoFormulario {
                                 respostas[i] = respostas[i].trim().replaceAll(" +", " ");
                                 if (respostas[i] == ""){
                                     respostas[i] = naoinformado;
-                                    continue;
+                                    break;
                                 }
                                 for (int j = 0; j < respostas[0].length(); j++){
                                     if ((respostas[i].charAt(j) < 'a' || respostas[i].charAt(j) > 'z') && (respostas[i].charAt(j) < 'A'
@@ -67,6 +67,7 @@ public class ArquivoFormulario {
                             }catch (IllegalArgumentException e){
                                 System.out.println(e.getMessage());
                             }
+                            break;
                         case 1:
                             try {
                                 System.out.print(linha);
@@ -78,6 +79,7 @@ public class ArquivoFormulario {
                             }catch (IllegalArgumentException e){
                                 System.out.println(e.getMessage());
                             }
+                            break;
                         case 2:
                             try {
                                 System.out.println(linha);
@@ -89,6 +91,7 @@ public class ArquivoFormulario {
                             }catch (IllegalArgumentException e){
                                 System.out.println(e.getMessage());
                             }
+                            break;
                         case 3:
                             try {
                                 System.out.println();
@@ -106,6 +109,7 @@ public class ArquivoFormulario {
                             }catch (IllegalArgumentException e){
                                 System.out.println(e.getMessage());
                             }
+                            break;
                         case 4:
                             try {
                                 System.out.println();
@@ -117,13 +121,14 @@ public class ArquivoFormulario {
                             }catch (IllegalArgumentException e){
                                 System.out.println(e.getMessage());
                             }
+                            break;
                         case 5:
                             try {
                                 System.out.println();
                                 respostas[i] = scanner.nextLine();
                                 if (respostas[i] == ""){
                                     respostas[i] = naoinformado;
-                                    continue;
+                                    break;
                                 }
                                 respostas[i] = respostas[i].trim().replaceAll(" +"," ");
                                 for (int j = 0; j < respostas[i].length(); j++){
@@ -134,13 +139,14 @@ public class ArquivoFormulario {
                             }catch (IllegalArgumentException e){
                                 System.out.println(e.getMessage());
                             }
+                            break;
                         case 6:
                             try {
                                 System.out.println();
                                 respostas[i] = scanner.nextLine();
                                 if (respostas[i] == ""){
                                     respostas[i] = naoinformado;
-                                    continue;
+                                    break;
                                 }
                                 respostas[i] = respostas[i].trim().replaceAll(" ","").replaceAll(",",".");
                                 for (int j = 0; j < respostas[i].length(); j++){
@@ -159,13 +165,14 @@ public class ArquivoFormulario {
                             }catch (IllegalArgumentException e){
                                 System.out.println(e.getMessage());
                             }
+                            break;
                         case 7:
                             try {
                                 System.out.println();
                                 respostas[i] = scanner.nextLine();
                                 if (respostas[i] == ""){
                                     respostas[i] = naoinformado;
-                                    continue;
+                                    break;
                                 }
                                 respostas[i] = respostas[i].trim().replaceAll(" ","").replaceAll(",",".");
                                 for (int j = 0; j < respostas[i].length(); j++){
@@ -182,13 +189,14 @@ public class ArquivoFormulario {
                             }catch (IllegalArgumentException e){
                                 System.out.println(e.getMessage());
                             }
+                            break;
                         case 8:
                             try {
                                 System.out.println();
                                 respostas[i] = scanner.nextLine();
                                 if (respostas[i] == ""){
                                     respostas[i] = naoinformado;
-                                    continue;
+                                    break;
                                 }
                                 respostas[i] = respostas[i].trim().replaceAll(" +"," ");
                                 for (int j = 0; j < respostas[0].length(); j++){
@@ -200,6 +208,7 @@ public class ArquivoFormulario {
                             }catch (IllegalArgumentException e){
                                 System.out.println(e.getMessage());
                             }
+                            break;
                     }
                 }
             }catch (IOException e){
