@@ -1,4 +1,6 @@
-package pet;
+package sistemadecadastros.repository;
+
+import sistemadecadastros.model.Pet;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -6,10 +8,10 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class CriaRegistroPet {
+public class PetRepository {
     private Pet pet;
 
-    public CriaRegistroPet(Pet pet){
+    public PetRepository(Pet pet){
         this.pet = pet;
     }
 

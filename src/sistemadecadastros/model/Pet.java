@@ -1,10 +1,4 @@
-package pet;
-
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+package sistemadecadastros.model;
 
 public class Pet {
     private String nome;

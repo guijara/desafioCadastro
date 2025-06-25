@@ -1,16 +1,17 @@
-package cadastro;
+package sistemadecadastros;
 
-import pet.Pet;
+import sistemadecadastros.cadastro.TratamentoEntrada;
+import sistemadecadastros.model.Pet;
+import sistemadecadastros.service.CadastroService;
 
 import java.io.*;
-import java.nio.channels.IllegalChannelGroupException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class MenuInicial {
+public class Application {
     public static void main(String[] args) throws FileNotFoundException {
         Scanner scanner = new Scanner(System.in);
-        ArquivoFormulario arquivoFormulario = new ArquivoFormulario();
+        CadastroService formulárioService = new CadastroService();
         TratamentoEntrada tratamentoEntrada = new TratamentoEntrada();
         int option = 0;
         System.out.println("1. Cadastrar um novo pet\n" +
@@ -36,7 +37,7 @@ public class MenuInicial {
         }
         switch (option) {
             case 1:
-                String[] ans = arquivoFormulario.printArquivoFormulario();
+                String[] ans = formulárioService.printArquivoFormulario();
                 Pet pet = new Pet(ans[0], ans[1], ans[2], ans[4], Integer.parseInt(ans[5]), ans[3], Double.parseDouble(ans[6]), Double.parseDouble(ans[7]), ans[8]);
                 pet.criaArquivo();
             case 2:

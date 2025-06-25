@@ -1,10 +1,9 @@
-package cadastro;
+package sistemadecadastros.cadastro;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.Year;
 import java.util.Scanner;
 
@@ -140,7 +139,7 @@ public class TratamentoEntrada {
                 try {
                     System.out.println("Escolha um filtro primário para encontrar seu pet!");
                     System.out.println("1 - Tipo do Pet (Cachorro ou Gato)");
-                    System.out.println("2 - Data de cadastro");
+                    System.out.println("2 - Data de sistemadecadastros.UI.cadastro");
                     System.out.println(":  ");
                     String teste = scanner.nextLine();
                     filtroPrimario = Integer.parseInt(teste);
@@ -167,7 +166,7 @@ public class TratamentoEntrada {
                             throw new IllegalArgumentException("O tipo deve ser obrigatoriamente Gato ou Cachorro!");
                         }
                     }else if (filtroPrimario == 2){
-                        System.out.println("Digite a Data de cadastro");
+                        System.out.println("Digite a Data de sistemadecadastros.UI.cadastro");
                         System.out.print("Ano:  ");
                         filtro[0] = scanner.nextLine();
                         filtro[0] = filtro[0].trim();
