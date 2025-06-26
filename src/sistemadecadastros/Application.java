@@ -38,7 +38,7 @@ public class Application {
         switch (option) {
             case 1:
                 String[] ans = formulárioService.printArquivoFormulario();
-                Pet pet = new Pet(ans[0], ans[1], ans[2], ans[4], Integer.parseInt(ans[5]), ans[3], Double.parseDouble(ans[6]), Double.parseDouble(ans[7]), ans[8]);
+
                 pet.criaArquivo();
             case 2:
                 System.out.println("Escolha o numero do Pet que deseja alterar:");

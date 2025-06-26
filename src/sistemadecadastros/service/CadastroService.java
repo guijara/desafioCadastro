@@ -2,7 +2,8 @@ package sistemadecadastros.service;
 
 import sistemadecadastros.UI.ConsoleUi;
 import sistemadecadastros.Validation.PetValidation;
-import sistemadecadastros.cadastro.TratamentoEntrada;
+import sistemadecadastros.model.Pet;
+import sistemadecadastros.repository.PetRepository;
 
 import java.io.*;
 
@@ -35,62 +36,51 @@ public class CadastroService {
         return file;
     }
 
-    String[] respostas = new String[9];
 
-
-
-    public String[] printArquivoFormulario() {
-        TratamentoEntrada tratamentoEntrada = new TratamentoEntrada();
-        try (BufferedReader bf = new BufferedReader(new FileReader(tratamentoEntrada.retornaPastaDeRegistros()))) {
+    public void criaRegistroDoPet() {
+        String[] respostas = new String[9];
+        try (BufferedReader bf = new BufferedReader(new FileReader(escreveArquivo()))) {
             String linha;
             int i = 0;
             while ((linha = bf.readLine()) != null && i < 9) {
-                boolean verify = false;
-                final String naoinformado = "NÃO INFORMADO";
                 switch (i) {
                     case 0:
                         respostas[i] = petValidation.validaNome(linha);
-                        i++;
                         break;
                     case 1:
                         respostas[i] = petValidation.validaTipo(linha);
-                        i++;
                         break;
                     case 2:
                         respostas[i] = petValidation.validaSexo(linha);
-                        i++;
                         break;
                     case 3:
                         respostas[i] = petValidation.validaCidade(linha);
-                        i++;
                         break;
                     case 4:
                         respostas[i] = petValidation.validaRua(linha);
-                        i++;
                         break;
                     case 5:
                         respostas[i] = petValidation.validaNumeroDaCasa(linha);
-                        i++;
                         break;
                     case 6:
                         respostas[i] = petValidation.validaIdade(linha);
-                        i++;
                         break;
                     case 7:
                         respostas[i] = petValidation.validaPeso(linha);
-                        i++;
                         break;
                     case 8:
                         respostas[i] = petValidation.validaRaça(linha);
-                        i++;
                         break;
                 }
+                i++;
             }
         }catch (FileNotFoundException e){
             System.out.println("Arquivo não encontrado ou não existe!");
         }catch (IOException e){
             System.out.println("Não foi possível ler o arquivo!");
         }
-        return respostas;
+        Pet pet = new Pet(respostas[0], respostas[1], respostas[2], respostas[4], Integer.parseInt(respostas[5]), respostas[3], Double.parseDouble(respostas[6]), Double.parseDouble(respostas[7]), respostas[8]);
+        PetRepository petRepository = new PetRepository(pet);
+        petRepository.criaArquivo();
     }
 }

@@ -10,7 +10,7 @@ import java.util.Scanner;
 public class TratamentoEntrada {
     Scanner scanner = new Scanner(System.in);
 
-    public String[] listaPets(){
+    public String[] listaPets(){ // Mostra todos os pets dos arquivos selecionados na formatação correta
         int i = calculaQuantidadeDeRegistros();
         String[] resultadosBusca = new String[i];
         try {
@@ -46,7 +46,7 @@ public class TratamentoEntrada {
         return resultadosBusca;
     }
 
-    public int calculaQuantidadeDeRegistros(){
+    public int calculaQuantidadeDeRegistros(){ // calcula a quantidade de arquivos tem na pasta
         int i = 0;
         try {
             File file = new File("/src/petsCadastrados");
@@ -70,7 +70,7 @@ public class TratamentoEntrada {
         return erro;
     }
 
-    public File[] trataBusca(){
+    public File[] trataBusca(){ // seleciona os arquivos da pasta conforme os critérios selecioandos
         TratamentoEntrada te = new TratamentoEntrada();
         String[] input = te.trataEntrada();
 
@@ -131,7 +131,7 @@ public class TratamentoEntrada {
     }
 
 
-    public String[] trataEntrada() {
+    public String[] trataEntrada() { // Recebe 2 ou 3 filtros selecionados para listagem
         String[] filtro = new String[3];
         try {
             int filtroPrimario = -1;
