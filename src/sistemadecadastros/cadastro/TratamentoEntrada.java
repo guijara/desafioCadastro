@@ -46,30 +46,6 @@ public class TratamentoEntrada {
         return resultadosBusca;
     }
 
-    public int calculaQuantidadeDeRegistros(){ // calcula a quantidade de arquivos tem na pasta
-        int i = 0;
-        try {
-            File file = new File("/src/petsCadastrados");
-            for (File file1 : file.listFiles()) {
-                i++;
-            }
-        }catch (NullPointerException e){
-            e.printStackTrace();
-        }
-        return i;
-    }
-
-    public File retornaPastaDeRegistros(){
-        try {
-            File file = new File("/src/petsCadastrados");
-            return file;
-        }catch (NullPointerException e) {
-            e.printStackTrace();
-        }
-        File erro = new File("erro");
-        return erro;
-    }
-
     public File[] trataBusca(){ // seleciona os arquivos da pasta conforme os critérios selecioandos
         TratamentoEntrada te = new TratamentoEntrada();
         String[] input = te.trataEntrada();
@@ -139,7 +115,7 @@ public class TratamentoEntrada {
                 try {
                     System.out.println("Escolha um filtro primário para encontrar seu pet!");
                     System.out.println("1 - Tipo do Pet (Cachorro ou Gato)");
-                    System.out.println("2 - Data de sistemadecadastros.UI.cadastro");
+                    System.out.println("2 - Data de cadastro do Pet");
                     System.out.println(":  ");
                     String teste = scanner.nextLine();
                     filtroPrimario = Integer.parseInt(teste);
