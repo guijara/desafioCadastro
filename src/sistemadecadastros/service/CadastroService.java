@@ -11,7 +11,7 @@ public class CadastroService {
     ConsoleUi consoleUi = new ConsoleUi();
     PetValidation petValidation = new PetValidation();
 
-    private File escreveArquivo() {
+    private File escrevaQuestionário() {
         File file = new File("formulario.txt");
         try {
             file.createNewFile();
@@ -38,8 +38,9 @@ public class CadastroService {
 
 
     public void criaRegistroDoPet() {
+        System.out.println("Inicializando cadastro...");
         String[] respostas = new String[9];
-        try (BufferedReader bf = new BufferedReader(new FileReader(escreveArquivo()))) {
+        try (BufferedReader bf = new BufferedReader(new FileReader(escrevaQuestionário()))) {
             String linha;
             int i = 0;
             while ((linha = bf.readLine()) != null && i < 9) {
@@ -82,5 +83,6 @@ public class CadastroService {
         Pet pet = new Pet(respostas[0], respostas[1], respostas[2], respostas[4], Integer.parseInt(respostas[5]), respostas[3], Double.parseDouble(respostas[6]), Double.parseDouble(respostas[7]), respostas[8]);
         PetRepository petRepository = new PetRepository(pet);
         petRepository.criaArquivo();
+        System.out.println("Cadastro realizado com sucesso!");
     }
 }

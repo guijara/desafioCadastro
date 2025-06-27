@@ -5,12 +5,36 @@ public class CriteriosDeBusca {
     private Tipo tipo;
     private Sexo sexo;
     private String rua;
-    private int num_casa;
+    private Integer num_casa;
     private String cidade;
-    private double idade;
-    private double peso;
+    private Double idade;
+    private Double peso;
     private String race;
     private String data_de_cadastro;
+
+    public Integer getNum_casa() {
+        return num_casa;
+    }
+
+    public void setNum_casa(Integer num_casa) {
+        this.num_casa = num_casa;
+    }
+
+    public Double getIdade() {
+        return idade;
+    }
+
+    public void setIdade(Double idade) {
+        this.idade = idade;
+    }
+
+    public Double getPeso() {
+        return peso;
+    }
+
+    public void setPeso(Double peso) {
+        this.peso = peso;
+    }
 
     public String getData_de_cadastro() {
         return data_de_cadastro;
@@ -52,13 +76,6 @@ public class CriteriosDeBusca {
         this.rua = rua;
     }
 
-    public int getNum_casa() {
-        return num_casa;
-    }
-
-    public void setNum_casa(int num_casa) {
-        this.num_casa = num_casa;
-    }
 
     public String getCidade() {
         return cidade;
@@ -66,22 +83,6 @@ public class CriteriosDeBusca {
 
     public void setCidade(String cidade) {
         this.cidade = cidade;
-    }
-
-    public double getIdade() {
-        return idade;
-    }
-
-    public void setIdade(double idade) {
-        this.idade = idade;
-    }
-
-    public double getPeso() {
-        return peso;
-    }
-
-    public void setPeso(double peso) {
-        this.peso = peso;
     }
 
     public String getRace() {

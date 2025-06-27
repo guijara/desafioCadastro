@@ -2,6 +2,9 @@ package sistemadecadastros.Validation;
 
 import sistemadecadastros.UI.ConsoleUi;
 
+import java.time.Year;
+import java.util.InputMismatchException;
+
 public class PetValidation {
     ConsoleUi consoleUi = new ConsoleUi();
     final String naoinformado = "NÃO INFORMADO";
@@ -226,6 +229,37 @@ public class PetValidation {
             }
         }
         return race;
+    }
+
+    public String validaDataDeCadastro(String pergunta){
+        String dataDeCadastro;
+        while (true){
+            try {
+                dataDeCadastro = consoleUi.pedir(pergunta);
+                if (dataDeCadastro.isBlank()){
+                    throw new IllegalArgumentException("Digite um ano!");
+                }
+                dataDeCadastro.trim().replaceAll(" +"," ");
+                int verify = Integer.parseInt(dataDeCadastro);
+                if (verify < 1950 || verify > Year.now().getValue()){
+                    throw new IllegalArgumentException("Insira um ano válido!");
+                }
+
+                String mes = consoleUi.pedir("Digite o número correspondente ao mês:  ");
+                verify = Integer.parseInt(mes.trim().replaceAll(" +"," "));
+                if (verify < 1 || verify > 12){
+                    throw new IllegalArgumentException("Insira um mês válido (de 1 à 12)!");
+                }
+                mes = String.format("%02d", verify);
+                dataDeCadastro += mes;
+                break;
+            }catch (NumberFormatException e){
+                System.out.println("Erro encontrado: Digite apenas números!");
+            }catch (IllegalArgumentException e){
+                System.out.println("Erro encontrado: "+e.getMessage());
+            }
+        }
+        return dataDeCadastro;
     }
 
 }
