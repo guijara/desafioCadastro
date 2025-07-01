@@ -2,6 +2,7 @@ package sistemadecadastros.UI;
 
 import sistemadecadastros.Validation.PetValidation;
 import sistemadecadastros.model.CriteriosDeBusca;
+import sistemadecadastros.model.Pet;
 import sistemadecadastros.model.Sexo;
 import sistemadecadastros.model.Tipo;
 
@@ -22,39 +23,21 @@ public class ConsoleUi {
         System.out.println(mensagem);
     }
 
-
-    public CriteriosDeBusca retornaCriteriosAvançados(){
-        int i = retornaQuantidadeDeCriteriosOpcionais();
-        if (i == 1){
-            criteriosDeBusca = retornaCriterioSimples(criteriosDeBusca);
-        }else if (i == 2){
-            criteriosDeBusca = retornaCriterioSimples(criteriosDeBusca);
-
-        }
-        CriteriosDeBusca criterios = new CriteriosDeBusca();
-        criterios =
-        for (int j = 0; j < i; j++){
-            criterios = retornaCriterioSimples(criterios);
-        }
-        return criterios;
+    public void formataListaDePets(Pet pet,int i){
+        System.out.println(i+". "+pet.getNome()+" - "+pet.getTipo()+" - "+pet.getSexo()+" - "+pet.getRua()+", "+pet.getNum_casa()+" - "+pet.getCidade()+" - "+pet.getIdade()+" - "+pet.getPeso()+" - "+pet.getRace());
     }
 
-    public void mostraResultadoDaBusca(){
-
-    }
 
     public int recebeOpçãoDoMenu(){
         int opção;
         while (true){
             try {
-                System.out.println("1. Cadastrar um novo pet\n" +
+                String opçãoAux = pedir("1. Cadastrar um novo pet\n" +
                         "2. Alterar os dados do pet cadastrado\n" +
                         "3. Deletar um pet cadastrado\n" +
                         "4. Listar todos os pets cadastrados\n" +
                         "5. Listar pets por algum critério (idade, nome, raça)\n" +
-                        "6. Sair");
-                System.out.print(":  ");
-                String opçãoAux = scanner.nextLine();
+                        "6. Sair\n"+":  ");
                 opção = Integer.parseInt(opçãoAux);
                 if (opção < 1 || opção > 6) {
                     throw new IllegalArgumentException("Erro encontrado: Digite uma opção válida!");

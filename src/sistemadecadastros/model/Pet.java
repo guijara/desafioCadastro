@@ -10,8 +10,9 @@ public class Pet {
     private double idade;
     private double peso;
     private String race;
+    private String data_de_cadastro;
 
-    public Pet(String nome,String tipo,String sexo,String rua,int num_casa,String cidade,double idade,double peso,String race){
+    public Pet(String nome,String tipo,String sexo,String rua,int num_casa,String cidade,double idade,double peso,String race,String data_de_cadastro){
         this.nome = nome;
         this.tipo = Tipo.valueOf(tipo);
         this.sexo = Sexo.valueOf(sexo);
@@ -21,6 +22,15 @@ public class Pet {
         this.idade = idade;
         this.peso = peso;
         this.race = race;
+        this.data_de_cadastro = data_de_cadastro;
+    }
+
+    public String getData_de_cadastro() {
+        return data_de_cadastro;
+    }
+
+    public void setData_de_cadastro(String data_de_cadastro) {
+        this.data_de_cadastro = data_de_cadastro;
     }
 
     public String getNome() {

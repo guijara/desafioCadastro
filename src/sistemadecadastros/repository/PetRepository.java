@@ -10,15 +10,16 @@ import java.time.format.DateTimeFormatter;
 public class PetRepository {
     private Pet pet;
 
-    public PetRepository(Pet pet){
-        this.pet = pet;
-    }
+//    public PetRepository(Pet pet){
+//        this.pet = pet;
+//    }
 
     public void criaArquivo(){
         LocalDateTime now = LocalDateTime.now().withNano(0);
         String date = now.format(DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmm"));
         String nomeFormatado = pet.getNome().toUpperCase().replaceAll(" ","");
-        File file = new File("petsCadastrados"+date+"-"+nomeFormatado+".txt");
+        pet.setData_de_cadastro(date);
+        File file = new File("petsCadastrados/"+date+"-"+nomeFormatado+".txt");
         try {
             file.createNewFile();
             try (FileWriter fw = new FileWriter(file)){
@@ -46,11 +47,16 @@ public class PetRepository {
                 petAux[i] = partes[1];
                 i++;
             }
-        }catch (IOException e){
+        }catch (IOException e) {
             System.out.println("Erro encontrado: Não foi possível abrir o arquivo!");
         }
-        String[] endereço = petAux[3].split(",");
-        return new Pet(petAux[0],petAux[1],petAux[2],endereço[0],Integer.parseInt(endereço[1]),endereço[2],Double.parseDouble(petAux[4]),Double.parseDouble(petAux[5]),petAux[6]);
+        try {
+            String[] endereço = petAux[3].split(",");
+            return new Pet(petAux[0],petAux[1],petAux[2],endereço[0],Integer.parseInt(endereço[1]),endereço[2],Double.parseDouble(petAux[4]),Double.parseDouble(petAux[5]),petAux[6],file.getName().substring(0,6));
+        }catch (Exception e){
+            System.out.println("Erro encontrado!");
+            return null;
+        }
     }
 
     public Pet[] retornaTodosOsPets(){
@@ -80,7 +86,38 @@ public class PetRepository {
     }
 
 
-    public boolean verificaPet(Pet pet,CriteriosDeBusca criterio){
+    public Pet[] buscaPets(CriteriosDeBusca criteriosDeBusca){
+        File file = new File("petsCadastrados");
+
+        if (!file.exists() || !file.isDirectory()){
+            System.out.println("O Diretório de registros não foi encontrado!");
+            return new Pet[0];
+        }
+
+        File[] arquivos = file.listFiles();
+
+        if (arquivos == null){
+            System.out.println("Ocoreu um erro ao ler o Diretório");
+            return new Pet[0];
+        }
+
+        Pet[] petsAux = new Pet[arquivos.length];
+        int i = 0;
+
+        for (File files:arquivos){
+            Pet pet = criaPet(files);
+            if (verificaPet(pet,criteriosDeBusca)){
+                petsAux[i] = pet;
+                i++;
+            }
+        }
+        Pet[] pets = new Pet[i];
+        System.arraycopy(petsAux,0,pets,0,i);
+        return pets;
+    }
+
+
+    private boolean verificaPet(Pet pet,CriteriosDeBusca criterio){
 
         if (criterio.getNome() != null && !pet.getNome().equals(criterio.getNome())){
             return false;
@@ -109,6 +146,10 @@ public class PetRepository {
         if (criterio.getRace() != null && !criterio.getRace().equals(pet.getRace())){
             return false;
         }
+        if (criterio.getData_de_cadastro() != null && !criterio.getData_de_cadastro().equals(pet.getData_de_cadastro())){
+            return false;
+        }
+
         return true;
     }
 }
