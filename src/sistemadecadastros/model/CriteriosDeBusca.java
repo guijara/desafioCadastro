@@ -37,6 +37,10 @@ public class CriteriosDeBusca {
     }
 
     public String getData_de_cadastro() {
+        return data_de_cadastro.substring(0,6);
+    }
+
+    public String getData_de_cadastro2(){
         return data_de_cadastro;
     }
 

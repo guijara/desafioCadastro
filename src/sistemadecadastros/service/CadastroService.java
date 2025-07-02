@@ -81,8 +81,8 @@ public class CadastroService {
             System.out.println("Não foi possível ler o arquivo!");
         }
         Pet pet = new Pet(respostas[0], respostas[1], respostas[2], respostas[4], Integer.parseInt(respostas[5]), respostas[3], Double.parseDouble(respostas[6]), Double.parseDouble(respostas[7]), respostas[8]);
-        PetRepository petRepository = new PetRepository(pet);
-        petRepository.criaArquivo();
+        PetRepository petRepository = new PetRepository();
+        petRepository.criaArquivo(pet);
         System.out.println("Cadastro realizado com sucesso!");
     }
 }

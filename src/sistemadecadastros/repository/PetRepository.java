@@ -8,13 +8,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class PetRepository {
-    private Pet pet;
 
-//    public PetRepository(Pet pet){
-//        this.pet = pet;
-//    }
-
-    public void criaArquivo(){
+    public void criaArquivo(Pet pet){
         LocalDateTime now = LocalDateTime.now().withNano(0);
         String date = now.format(DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmm"));
         String nomeFormatado = pet.getNome().toUpperCase().replaceAll(" ","");
@@ -52,7 +47,7 @@ public class PetRepository {
         }
         try {
             String[] endereço = petAux[3].split(",");
-            return new Pet(petAux[0],petAux[1],petAux[2],endereço[0],Integer.parseInt(endereço[1]),endereço[2],Double.parseDouble(petAux[4]),Double.parseDouble(petAux[5]),petAux[6],file.getName().substring(0,6));
+            return new Pet(petAux[0],petAux[1],petAux[2],endereço[0],Integer.parseInt(endereço[1]),endereço[2],Double.parseDouble(petAux[4]),Double.parseDouble(petAux[5]),petAux[6],file.getName().substring(0,13));
         }catch (Exception e){
             System.out.println("Erro encontrado!");
             return null;
@@ -97,7 +92,7 @@ public class PetRepository {
         File[] arquivos = file.listFiles();
 
         if (arquivos == null){
-            System.out.println("Ocoreu um erro ao ler o Diretório");
+            System.out.println("Ocorreu um erro ao ler o Diretório");
             return new Pet[0];
         }
 
@@ -149,8 +144,28 @@ public class PetRepository {
         if (criterio.getData_de_cadastro() != null && !criterio.getData_de_cadastro().equals(pet.getData_de_cadastro())){
             return false;
         }
-
         return true;
+    }
+
+
+    public void atualizaPet(Pet petAlterado,Pet petAntigo){
+        String nomeDoArquivo = petAntigo.getData_de_cadastro2()+"-"+petAntigo.getNome().toUpperCase().replaceAll(" ","")+".txt";
+        File file = new File("petsCadastros/"+nomeDoArquivo);
+
+        if (file.exists()){
+            file.delete();
+        }
+
+        criaArquivo(petAlterado);
+    }
+
+    public void removeRegistroDePet(Pet petParaRemoção){
+        String nomeDoArquivo = petParaRemoção.getData_de_cadastro2()+"-"+petParaRemoção.getNome().toUpperCase().replaceAll(" ","")+".txt";
+        File file = new File("petsCadastros/"+nomeDoArquivo);
+
+        if (file.exists()){
+            file.delete();
+        }
     }
 }
 

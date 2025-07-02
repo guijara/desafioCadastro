@@ -12,6 +12,20 @@ public class Pet {
     private String race;
     private String data_de_cadastro;
 
+
+    public Pet(String nome,String tipo,String sexo,String rua,int num_casa,String cidade,double idade,double peso,String race){
+        this.nome = nome;
+        this.tipo = Tipo.valueOf(tipo);
+        this.sexo = Sexo.valueOf(sexo);
+        this.rua = rua;
+        this.num_casa = num_casa;
+        this.cidade = cidade;
+        this.idade = idade;
+        this.peso = peso;
+        this.race = race;
+        this.data_de_cadastro = data_de_cadastro;
+    }
+
     public Pet(String nome,String tipo,String sexo,String rua,int num_casa,String cidade,double idade,double peso,String race,String data_de_cadastro){
         this.nome = nome;
         this.tipo = Tipo.valueOf(tipo);
@@ -25,7 +39,24 @@ public class Pet {
         this.data_de_cadastro = data_de_cadastro;
     }
 
+    public Pet(Pet petCopia){
+        this.nome = petCopia.getNome();
+        this.tipo = petCopia.getTipo();
+        this.sexo = petCopia.getSexo();
+        this.rua = petCopia.getRua();
+        this.num_casa = petCopia.getNum_casa();
+        this.cidade = petCopia.getCidade();
+        this.idade = petCopia.getIdade();
+        this.peso = petCopia.getPeso();
+        this.race = petCopia.getRace();
+        this.data_de_cadastro = petCopia.getData_de_cadastro();
+    }
+
     public String getData_de_cadastro() {
+        return data_de_cadastro.substring(0,6);
+    }
+
+    public String getData_de_cadastro2(){
         return data_de_cadastro;
     }
 

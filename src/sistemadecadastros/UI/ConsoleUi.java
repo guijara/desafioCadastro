@@ -27,6 +27,15 @@ public class ConsoleUi {
         System.out.println(i+". "+pet.getNome()+" - "+pet.getTipo()+" - "+pet.getSexo()+" - "+pet.getRua()+", "+pet.getNum_casa()+" - "+pet.getCidade()+" - "+pet.getIdade()+" - "+pet.getPeso()+" - "+pet.getRace());
     }
 
+    public void mostraTiposDoPet(Pet pet){
+        System.out.println("O que deseja alterar?");
+        System.out.println("1 - Nome: "+pet.getNome());
+        System.out.println("2 - Endereço: "+pet.getRua()+", "+pet.getNum_casa()+", "+pet.getCidade());
+        System.out.println("3 - Idade: "+pet.getIdade());
+        System.out.println("4 - Peso: "+pet.getPeso());
+        System.out.println("5 - Raça: "+pet.getRace());
+    }
+
 
     public int recebeOpçãoDoMenu(){
         int opção;
