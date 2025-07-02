@@ -13,7 +13,7 @@ Você chegou ao **primeiro grande desafio do guia**! 😎 Agora, é hora de colo
 
 Leia TODO o desafio com ATENÇÃO antes de começar a faze-lo e respeite as regras, evite o uso do GPT ao máximo e use-o com sabedoria quando necessário!
 ## Objetivo
-Neste desafio, você será desafiado a criar um sistema de cadastro via CLI (interface de linha de comando), para nossos futuros adotantes poderem escolher o seu animalzinho.
+Neste desafio, você será desafiado a criar um sistema de sistemadecadastros.UI.cadastro via CLI (interface de linha de comando), para nossos futuros adotantes poderem escolher o seu animalzinho.
 
 O dono do abrigo de animais que será o usuário do seu programa será capaz de:
 
@@ -175,7 +175,7 @@ Permitir que o usuário altere os dados de um pet cadastrado.
 3. O usuário receberá uma LISTA (igual a exibição anterior) com os resultados da busca, e deverá escolher o número do pet que deseja alterar.
 4. O usuário poderá alterar TODOS os dados do pet, EXCETO o TIPO E SEXO
 
-## 📍Passo 7: Deletar um animal cadastro 🔍
+## 📍Passo 7: Deletar um animal sistemadecadastros.UI.cadastro 🔍
 O usuário, ao selecionar a opção de 4, deverá ser capaz de deletar o pet.
 
 ### _Regras ⚠️_
@@ -198,7 +198,7 @@ Caso você tenha concluído todos os passos anteriores, você poderá implementa
 Você irá criar na tela inicial, uma nova tela de opções, sendo:
 
 ```
-1 - Iniciar o sistema para cadastro de PETS
+1 - Iniciar o sistema para sistemadecadastros.UI.cadastro de PETS
 2 - Iniciar o sistema para alterar formulário
 ```
 
