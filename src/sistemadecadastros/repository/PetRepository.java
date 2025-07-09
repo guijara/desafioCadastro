@@ -28,7 +28,7 @@ public class PetRepository {
                 fw.flush();
             }
         }catch (IOException e){
-            System.out.println("Houve um erro ao tentar criar o Arquivo!");
+            System.out.println("Erro encontrado: Falha ao tentar criar o Arquivo!");
         }
     }
 
@@ -65,7 +65,7 @@ public class PetRepository {
         File[] arquivos = file.listFiles();
 
         if (arquivos == null){
-            System.out.println("Ocoreu um erro ao ler o Diretório");
+            System.out.println("Ocorreu um erro ao ler o Diretório");
             return new Pet[0];
         }
 

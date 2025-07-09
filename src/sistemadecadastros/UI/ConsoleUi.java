@@ -1,17 +1,13 @@
 package sistemadecadastros.UI;
 
 import sistemadecadastros.Validation.PetValidation;
-import sistemadecadastros.model.CriteriosDeBusca;
 import sistemadecadastros.model.Pet;
-import sistemadecadastros.model.Sexo;
-import sistemadecadastros.model.Tipo;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class ConsoleUi {
     Scanner scanner = new Scanner(System.in);
-    PetValidation petValidation = new PetValidation();
 
     public String pedir(String pergunta){
         System.out.print(pergunta);

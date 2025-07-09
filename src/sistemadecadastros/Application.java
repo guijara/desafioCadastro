@@ -1,6 +1,8 @@
 package sistemadecadastros;
 
 import sistemadecadastros.UI.ConsoleUi;
+import sistemadecadastros.Validation.PetValidation;
+import sistemadecadastros.repository.PetRepository;
 import sistemadecadastros.service.AlteraçãoService;
 import sistemadecadastros.service.CadastroService;
 import sistemadecadastros.service.ConsultaService;
@@ -11,14 +13,19 @@ import java.util.Scanner;
 public class Application {
     public static void main(String[] args) throws FileNotFoundException {
         Scanner scanner = new Scanner(System.in);
-        CadastroService cadastro = new CadastroService();
         ConsoleUi consoleUi = new ConsoleUi();
-        ConsultaService consultaService = new ConsultaService();
-        AlteraçãoService alteraçãoService = new AlteraçãoService();
+        PetValidation petValidation = new PetValidation(consoleUi);
+        PetRepository petRepository = new PetRepository();
+
+        CadastroService cadastro = new CadastroService(consoleUi,petValidation,petRepository);
+        ConsultaService consultaService = new ConsultaService(consoleUi,petValidation,petRepository);
+        AlteraçãoService alteraçãoService = new AlteraçãoService(consoleUi,petValidation,petRepository,consultaService);
+
 
 
         while (true){
-            switch (consoleUi.recebeOpçãoDoMenu()) {
+            int opcao = consoleUi.recebeOpçãoDoMenu();
+            switch (opcao) {
                 case 1:
                     cadastro.criaRegistroDoPet();
                     break;

@@ -12,14 +12,23 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class ConsultaService {
-    ConsoleUi consoleUi = new ConsoleUi();
-    CriteriosDeBusca criteriosDeBusca = new CriteriosDeBusca();
-    PetValidation petValidation = new PetValidation();
     Scanner scanner = new Scanner(System.in);
-    PetRepository petRepository = new PetRepository();
+    CriteriosDeBusca criteriosDeBusca = new CriteriosDeBusca();
+
+    private final ConsoleUi consoleUi;
+    private final PetValidation petValidation;
+    private final PetRepository petRepository;
+
+    public ConsultaService(ConsoleUi consoleUi,PetValidation petValidation,PetRepository petRepository){
+        this.consoleUi = consoleUi;
+        this.petValidation = petValidation;
+        this.petRepository = petRepository;
+    }
 
 
     public void consultaGeral(){
+        consoleUi.printar("Inicializando consula...");
+
         Pet[] pets = petRepository.retornaTodosOsPets();
 
         int i = 1;
@@ -28,10 +37,14 @@ public class ConsultaService {
             consoleUi.formataListaDePets(pet,i);
             i++;
         }
+
+        consoleUi.printar("Consulta Finalizada!");
     }
 
 
     public void consultaSimples(){
+        consoleUi.printar("Inicializando consula...");
+
         CriteriosDeBusca criterio = new CriteriosDeBusca();
 
         int escolha = Integer.parseInt(verificaEscolhaDeNumeroSimples());
@@ -43,6 +56,8 @@ public class ConsultaService {
             consoleUi.formataListaDePets(pet,i);
             i++;
         }
+
+        consoleUi.printar("Consulta Finalizada!");
     }
 
 

@@ -6,10 +6,18 @@ import sistemadecadastros.model.Pet;
 import sistemadecadastros.repository.PetRepository;
 
 public class AlteraçãoService {
-    ConsultaService consultaService = new ConsultaService();
-    ConsoleUi consoleUi = new ConsoleUi();
-    PetValidation petValidation = new PetValidation();
-    PetRepository petRepository = new PetRepository();
+
+    private final ConsultaService consultaService;
+    private final ConsoleUi consoleUi;
+    private final PetValidation petValidation;
+    private final PetRepository petRepository;
+
+    public AlteraçãoService(ConsoleUi consoleUi,PetValidation petValidation,PetRepository petRepository,ConsultaService consultaService){
+        this.consoleUi = consoleUi;
+        this.petValidation = petValidation;
+        this.petRepository = petRepository;
+        this.consultaService = consultaService;
+    }
 
 
     public void alteraPet(){
@@ -33,6 +41,8 @@ public class AlteraçãoService {
 
         String confirmacao = perguntaConfirmação();
         confirmaEscolha(confirmacao,petEscolhido);
+
+        consoleUi.printar("Remoção concluída!");
     }
 
 
