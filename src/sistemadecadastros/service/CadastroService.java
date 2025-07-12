@@ -95,7 +95,7 @@ public class CadastroService {
     }
 
 
-    private String pedirEValidarNome(String linha){
+    public String pedirEValidarNome(String linha){
         String resposta;
         while (true){
             try {
@@ -110,7 +110,7 @@ public class CadastroService {
     }
 
 
-    private String pedirEValidarTipo(String linha){
+    public String pedirEValidarTipo(String linha){
         String resposta;
         while (true){
             try {
@@ -125,7 +125,7 @@ public class CadastroService {
     }
 
 
-    private String pedirEValidarSexo(String linha){
+    public String pedirEValidarSexo(String linha){
         String resposta;
         while (true){
             try {
@@ -140,7 +140,7 @@ public class CadastroService {
     }
 
 
-    private String pedirEValidarCidade(String linha){
+    public String pedirEValidarCidade(String linha){
         String resposta;
         while (true){
             try {
@@ -155,7 +155,7 @@ public class CadastroService {
     }
 
 
-    private String pedirEValidarRua(String linha){
+    public String pedirEValidarRua(String linha){
         String resposta;
         while (true){
             try {
@@ -170,7 +170,7 @@ public class CadastroService {
     }
 
 
-    private String pedirEValidarNumCasa(String linha){
+    public String pedirEValidarNumCasa(String linha){
         String resposta;
         while (true){
             try {
@@ -185,7 +185,7 @@ public class CadastroService {
     }
 
 
-    private String pedirEValidarIdade(String linha){
+    public String pedirEValidarIdade(String linha){
         String resposta;
         while (true){
             try {
@@ -202,7 +202,7 @@ public class CadastroService {
     }
 
 
-    private String pedirEValidarPeso(String linha){
+    public String pedirEValidarPeso(String linha){
         String resposta;
         while (true){
             try {
@@ -219,7 +219,7 @@ public class CadastroService {
     }
 
 
-    private String pedirEValidarRaça(String linha){
+    public String pedirEValidarRaça(String linha){
         String resposta;
         while (true){
             try {
@@ -231,5 +231,23 @@ public class CadastroService {
             }
         }
         return resposta;
+    }
+
+
+    public String pedirEValidarDataDeCadastro(){
+        String data;
+        while (true){
+            try {
+                String ano = consoleUi.pedir("Digite o ano: ");
+                String mes = consoleUi.pedir("Digite o mês: ");
+                data = petValidation.validaDataDeCadastro(ano, mes);
+                break;
+            }catch (NumberFormatException e){
+                System.out.println("Erro encontrado: Digite apenas números!");
+            }catch (IllegalArgumentException e){
+                System.out.println("Erro encontrado: "+e.getMessage());
+            }
+        }
+        return data;
     }
 }

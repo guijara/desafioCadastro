@@ -150,33 +150,23 @@ public class PetValidation {
         return race;
     }
 
-    public String validaDataDeCadastro(String dataDeCadastro){
-        while (true){
-            try {
-                if (dataDeCadastro.isBlank()){
-                    throw new IllegalArgumentException("Digite um ano!");
-                }
-                dataDeCadastro.trim().replaceAll(" +"," ");
-                int verify = Integer.parseInt(dataDeCadastro);
-                if (verify < 1950 || verify > Year.now().getValue()){
-                    throw new IllegalArgumentException("Insira um ano válido!");
-                }
-
-                String mes = consoleUi.pedir("Digite o número correspondente ao mês:  ");
-                verify = Integer.parseInt(mes.trim().replaceAll(" +"," "));
-                if (verify < 1 || verify > 12){
-                    throw new IllegalArgumentException("Insira um mês válido (de 1 à 12)!");
-                }
-                mes = String.format("%02d", verify);
-                dataDeCadastro += mes;
-                break;
-            }catch (NumberFormatException e){
-                System.out.println("Erro encontrado: Digite apenas números!");
-            }catch (IllegalArgumentException e){
-                System.out.println("Erro encontrado: "+e.getMessage());
-            }
+    public String validaDataDeCadastro(String ano,String mes){
+        String data;
+        if (ano.isBlank()){
+            throw new IllegalArgumentException("Digite um ano com números!");
         }
-        return dataDeCadastro;
+        ano = ano.trim().replaceAll(" +"," ");
+        int verify = Integer.parseInt(ano);
+        if (verify < 1950 || verify > Year.now().getValue()){
+            throw new IllegalArgumentException("Insira um ano válido!");
+        }
+        verify = Integer.parseInt(mes.trim().replaceAll(" +"," "));
+        if (verify < 1 || verify > 12){
+            throw new IllegalArgumentException("Insira um mês válido (de 1 à 12)!");
+        }
+        mes = String.format("%02d", verify);
+        data = ano + mes;
+        return data;
     }
 
 }

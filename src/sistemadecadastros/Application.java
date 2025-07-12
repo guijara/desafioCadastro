@@ -18,8 +18,8 @@ public class Application {
         PetRepository petRepository = new PetRepository();
 
         CadastroService cadastro = new CadastroService(consoleUi,petValidation,petRepository);
-        ConsultaService consultaService = new ConsultaService(consoleUi,petValidation,petRepository);
-        AlteraçãoService alteraçãoService = new AlteraçãoService(consoleUi,petValidation,petRepository,consultaService);
+        ConsultaService consultaService = new ConsultaService(consoleUi,petValidation,petRepository,cadastro);
+        AlteraçãoService alteraçãoService = new AlteraçãoService(consoleUi,petValidation,petRepository,consultaService,cadastro);
 
 
 

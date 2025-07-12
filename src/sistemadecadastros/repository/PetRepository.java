@@ -47,9 +47,9 @@ public class PetRepository {
         }
         try {
             String[] endereço = petAux[3].split(",");
-            return new Pet(petAux[0],petAux[1],petAux[2],endereço[0],Integer.parseInt(endereço[1]),endereço[2],Double.parseDouble(petAux[4]),Double.parseDouble(petAux[5]),petAux[6],file.getName().substring(0,13));
+            return new Pet(petAux[0],petAux[1],petAux[2],endereço[0],Integer.parseInt(endereço[1].trim()),endereço[2],Double.parseDouble(petAux[4].trim()),Double.parseDouble(petAux[5].trim()),petAux[6],file.getName().substring(0,13));
         }catch (Exception e){
-            System.out.println("Erro encontrado!");
+            System.out.println("Erro encontrado1232131232131!");
             return null;
         }
     }
@@ -101,7 +101,7 @@ public class PetRepository {
 
         for (File files:arquivos){
             Pet pet = criaPet(files);
-            if (verificaPet(pet,criteriosDeBusca)){
+            if (pet != null && verificaPet(pet,criteriosDeBusca)){
                 petsAux[i] = pet;
                 i++;
             }
@@ -150,7 +150,7 @@ public class PetRepository {
 
     public void atualizaPet(Pet petAlterado,Pet petAntigo){
         String nomeDoArquivo = petAntigo.getData_de_cadastro2()+"-"+petAntigo.getNome().toUpperCase().replaceAll(" ","")+".txt";
-        File file = new File("petsCadastros/"+nomeDoArquivo);
+        File file = new File("petsCadastrados/"+nomeDoArquivo);
 
         if (file.exists()){
             file.delete();
