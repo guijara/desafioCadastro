@@ -32,7 +32,6 @@ public class AlteraçãoService {
             int opcaoDeTipo = verificaAlteracao(petEscolhido);
             petEscolhido = alteraTipo(opcaoDeTipo,petEscolhido);
             petRepository.atualizaPet(petEscolhido,petAux);
-            petRepository.removeRegistroDePet(petAux);
             consoleUi.printar("Alteração concluída com sucesso!");
         }else {
             consoleUi.printar("Processo de alteração finalizado!");
