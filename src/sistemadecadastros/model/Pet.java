@@ -23,7 +23,6 @@ public class Pet {
         this.idade = idade;
         this.peso = peso;
         this.race = race;
-        this.data_de_cadastro = data_de_cadastro;
     }
 
     public Pet(String nome,String tipo,String sexo,String rua,int num_casa,String cidade,double idade,double peso,String race,String data_de_cadastro){

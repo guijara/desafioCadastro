@@ -9,12 +9,21 @@ import java.time.format.DateTimeFormatter;
 
 public class PetRepository {
 
+    private final String caminhoAbsolutoDaPasta;
+
+    public PetRepository(){
+        File pastaDeRegistros = new File("petsCadastrados");
+
+        this.caminhoAbsolutoDaPasta = pastaDeRegistros.getAbsolutePath();
+
+        if (!pastaDeRegistros.exists()) {
+            pastaDeRegistros.mkdirs();
+        }
+    }
+
     public void criaArquivo(Pet pet){
-        LocalDateTime now = LocalDateTime.now().withNano(0);
-        String date = now.format(DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmm"));
-        String nomeFormatado = pet.getNome().toUpperCase().replaceAll(" ","");
-        pet.setData_de_cadastro(date);
-        File file = new File("petsCadastrados/"+date+"-"+nomeFormatado+".txt");
+        String nomeFormatado = pet.getData_de_cadastro2()+"-"+pet.getNome().toUpperCase().replaceAll(" ","")+".txt";
+        File file = new File(this.caminhoAbsolutoDaPasta,nomeFormatado);
         try {
             file.createNewFile();
             try (FileWriter fw = new FileWriter(file)){
@@ -28,7 +37,7 @@ public class PetRepository {
                 fw.flush();
             }
         }catch (IOException e){
-            System.out.println("Houve um erro ao tentar criar o Arquivo!");
+            System.out.println("Erro encontrado: Falha ao tentar criar o Arquivo!");
         }
     }
 
@@ -47,15 +56,15 @@ public class PetRepository {
         }
         try {
             String[] endereço = petAux[3].split(",");
-            return new Pet(petAux[0],petAux[1],petAux[2],endereço[0],Integer.parseInt(endereço[1]),endereço[2],Double.parseDouble(petAux[4]),Double.parseDouble(petAux[5]),petAux[6],file.getName().substring(0,13));
+            return new Pet(petAux[0],petAux[1],petAux[2],endereço[0],Integer.parseInt(endereço[1].trim()),endereço[2],Double.parseDouble(petAux[4].trim()),Double.parseDouble(petAux[5].trim()),petAux[6],file.getName().substring(0,13));
         }catch (Exception e){
-            System.out.println("Erro encontrado!");
+            System.out.println("Erro encontrado: Não foi possível abrir o arquivo!");
             return null;
         }
     }
 
     public Pet[] retornaTodosOsPets(){
-        File file = new File("petsCadastrados");
+        File file = new File(this.caminhoAbsolutoDaPasta);
 
         if (!file.exists() || !file.isDirectory()){
             System.out.println("O Diretório de registros não foi encontrado!");
@@ -65,7 +74,7 @@ public class PetRepository {
         File[] arquivos = file.listFiles();
 
         if (arquivos == null){
-            System.out.println("Ocoreu um erro ao ler o Diretório");
+            System.out.println("Ocorreu um erro ao ler o Diretório");
             return new Pet[0];
         }
 
@@ -82,7 +91,7 @@ public class PetRepository {
 
 
     public Pet[] buscaPets(CriteriosDeBusca criteriosDeBusca){
-        File file = new File("petsCadastrados");
+        File file = new File(this.caminhoAbsolutoDaPasta);
 
         if (!file.exists() || !file.isDirectory()){
             System.out.println("O Diretório de registros não foi encontrado!");
@@ -101,7 +110,7 @@ public class PetRepository {
 
         for (File files:arquivos){
             Pet pet = criaPet(files);
-            if (verificaPet(pet,criteriosDeBusca)){
+            if (pet != null && verificaPet(pet,criteriosDeBusca)){
                 petsAux[i] = pet;
                 i++;
             }
@@ -150,18 +159,19 @@ public class PetRepository {
 
     public void atualizaPet(Pet petAlterado,Pet petAntigo){
         String nomeDoArquivo = petAntigo.getData_de_cadastro2()+"-"+petAntigo.getNome().toUpperCase().replaceAll(" ","")+".txt";
-        File file = new File("petsCadastros/"+nomeDoArquivo);
+        File file = new File(this.caminhoAbsolutoDaPasta,nomeDoArquivo);
 
         if (file.exists()){
             file.delete();
         }
 
         criaArquivo(petAlterado);
+
     }
 
     public void removeRegistroDePet(Pet petParaRemoção){
         String nomeDoArquivo = petParaRemoção.getData_de_cadastro2()+"-"+petParaRemoção.getNome().toUpperCase().replaceAll(" ","")+".txt";
-        File file = new File("petsCadastros/"+nomeDoArquivo);
+        File file = new File(this.caminhoAbsolutoDaPasta,nomeDoArquivo);
 
         if (file.exists()){
             file.delete();

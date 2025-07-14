@@ -6,33 +6,53 @@ import sistemadecadastros.model.Pet;
 import sistemadecadastros.repository.PetRepository;
 
 public class AlteraçãoService {
-    ConsultaService consultaService = new ConsultaService();
-    ConsoleUi consoleUi = new ConsoleUi();
-    PetValidation petValidation = new PetValidation();
-    PetRepository petRepository = new PetRepository();
+
+    private final ConsultaService consultaService;
+    private final ConsoleUi consoleUi;
+    private final PetValidation petValidation;
+    private final PetRepository petRepository;
+    private final CadastroService cadastroService;
+
+    public AlteraçãoService(ConsoleUi consoleUi,PetValidation petValidation,PetRepository petRepository,ConsultaService consultaService,CadastroService cadastroService){
+        this.consoleUi = consoleUi;
+        this.petValidation = petValidation;
+        this.petRepository = petRepository;
+        this.consultaService = consultaService;
+        this.cadastroService = cadastroService;
+    }
 
 
     public void alteraPet(){
         consoleUi.printar("Alteração iniciando...");
         Pet[] pets = consultaService.retornaPetsDaconsultaAvançada();
-        int opcaoDePet = trataOpçaoDePet(pets);
-        Pet petEscolhido = pets[opcaoDePet-1];
-        Pet petAux = new Pet(petEscolhido);
-        int opcaoDeTipo = verificaAlteracao(petEscolhido);
-        petEscolhido = alteraTipo(opcaoDeTipo,petEscolhido);
-        petRepository.atualizaPet(petEscolhido,petAux);
-        consoleUi.printar("Alteração concluída com sucesso!");
+        if (consultaService.verificaConsulta(pets)){
+            int opcaoDePet = trataOpçaoDePet(pets);
+            Pet petEscolhido = pets[opcaoDePet-1];
+            Pet petAux = new Pet(petEscolhido);
+            int opcaoDeTipo = verificaAlteracao(petEscolhido);
+            petEscolhido = alteraTipo(opcaoDeTipo,petEscolhido);
+            petRepository.atualizaPet(petEscolhido,petAux);
+            consoleUi.printar("Alteração concluída com sucesso!");
+        }else {
+            consoleUi.printar("Processo de alteração finalizado!");
+        }
     }
 
     public void removePet(){
         consoleUi.printar("Remoção iniciando...");
 
         Pet[] pets = consultaService.retornaPetsDaconsultaAvançada();
-        int opcaoDePet = trataOpçaoDePet(pets);
-        Pet petEscolhido = pets[opcaoDePet-1];
+        if (consultaService.verificaConsulta(pets)){
+            int opcaoDePet = trataOpçaoDePet(pets);
+            Pet petEscolhido = pets[opcaoDePet-1];
 
-        String confirmacao = perguntaConfirmação();
-        confirmaEscolha(confirmacao,petEscolhido);
+            String confirmacao = perguntaConfirmação();
+            confirmaEscolha(confirmacao,petEscolhido);
+
+            consoleUi.printar("Remoção concluída!");
+        }else {
+            consoleUi.printar("Remoção finalizada!");
+        }
     }
 
 
@@ -108,21 +128,28 @@ public class AlteraçãoService {
     private Pet alteraTipo(int opcaoDeTipo, Pet pet){
             switch (opcaoDeTipo){
                 case 1:
-                    pet.setNome(petValidation.validaNome("Digite o novo nome:  "));
+                    String nome = cadastroService.pedirEValidarNome("Digite o novo nome:  ");
+                    pet.setNome(nome);
                     break;
                 case 2:
-                    pet.setRua(petValidation.validaRua("Digite a nova rua:  "));
-                    pet.setNum_casa(Integer.parseInt(petValidation.validaNumeroDaCasa("Digite o novo número da casa:  ")));
-                    pet.setCidade(petValidation.validaCidade("Digite a nova cidade:  "));
+                    String rua = cadastroService.pedirEValidarRua("Digite a nova rua:  ");
+                    pet.setRua(petValidation.validaRua(rua));
+                    String numCasa = cadastroService.pedirEValidarNumCasa("Digite o novo número da casa:  ");
+                    pet.setNum_casa(Integer.parseInt(numCasa));
+                    String cidade = cadastroService.pedirEValidarCidade("Digite a nova cidade:  ");
+                    pet.setCidade(cidade);
                     break;
                 case 3:
-                    pet.setIdade(Double.parseDouble(petValidation.validaIdade("Digite a nova idade:  ")));
+                    String idade = cadastroService.pedirEValidarIdade("Digite a nova idade:  ");
+                    pet.setIdade(Double.parseDouble(idade));
                     break;
                 case 4:
-                    pet.setPeso(Double.parseDouble(petValidation.validaPeso("Digite o novo peso:  ")));
+                    String peso = cadastroService.pedirEValidarPeso("Digite o novo peso:  ");
+                    pet.setPeso(Double.parseDouble(peso));
                     break;
                 case 5:
-                    pet.setRace(petValidation.validaRaça("Digite a nova raça:  "));
+                    String race = cadastroService.pedirEValidarRaça("Digite a nova raça:  ");
+                    pet.setRace(race);
                     break;
             }
         return pet;

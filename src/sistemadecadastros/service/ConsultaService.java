@@ -12,37 +12,60 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class ConsultaService {
-    ConsoleUi consoleUi = new ConsoleUi();
-    CriteriosDeBusca criteriosDeBusca = new CriteriosDeBusca();
-    PetValidation petValidation = new PetValidation();
     Scanner scanner = new Scanner(System.in);
-    PetRepository petRepository = new PetRepository();
+    CriteriosDeBusca criteriosDeBusca = new CriteriosDeBusca();
+
+    private final ConsoleUi consoleUi;
+    private final PetValidation petValidation;
+    private final PetRepository petRepository;
+    private final CadastroService cadastroService;
+
+    public ConsultaService(ConsoleUi consoleUi,PetValidation petValidation,PetRepository petRepository,CadastroService cadastroService){
+        this.consoleUi = consoleUi;
+        this.petValidation = petValidation;
+        this.petRepository = petRepository;
+        this.cadastroService = cadastroService;
+    }
 
 
     public void consultaGeral(){
+        consoleUi.printar("Inicializando consulta...");
+
         Pet[] pets = petRepository.retornaTodosOsPets();
 
-        int i = 1;
+        if (verificaConsulta(pets)){
+            int i = 1;
 
-        for (Pet pet:pets){
-            consoleUi.formataListaDePets(pet,i);
-            i++;
+            for (Pet pet:pets){
+                consoleUi.formataListaDePets(pet,i);
+                i++;
+            }
+
         }
+        consoleUi.printar("Consulta Finalizada!");
     }
 
 
     public void consultaSimples(){
+        consoleUi.printar("Inicializando consula...");
+
         CriteriosDeBusca criterio = new CriteriosDeBusca();
 
         int escolha = Integer.parseInt(verificaEscolhaDeNumeroSimples());
         criterio = retornaCriterioSimples(criterio,escolha);
 
         Pet[] pets = petRepository.buscaPets(criterio);
-        int i = 1;
-        for (Pet pet:pets){
-            consoleUi.formataListaDePets(pet,i);
-            i++;
+
+        if (verificaConsulta(pets)){
+            int i = 1;
+
+            for (Pet pet:pets){
+                consoleUi.formataListaDePets(pet,i);
+                i++;
+            }
         }
+
+        consoleUi.printar("Consulta Finalizada!");
     }
 
 
@@ -50,14 +73,49 @@ public class ConsultaService {
         CriteriosDeBusca criterios = new CriteriosDeBusca();
         String[] filtrosUtilizados = new String[2];
         criterios = retornaPrimeiroCriterioObrigatorio(criterios);
-        for (int i = 0; i < retornaQuantidadeDeCriteriosOpcionais(); i++) {
-                String escolha =  verificaEscolhaDeNumeroAvançada(filtrosUtilizados);
+        int quantidadeDeCriteriosAdicionais = retornaQuantidadeDeCriteriosOpcionais();
+        for (int i = 0; i < quantidadeDeCriteriosAdicionais; i++) {
+                String escolha =  verificaEscolhaDeNumeroAvançada(filtrosUtilizados); //2
                 criterios = retornaCriterioAvançado(criterios, retornaRelaçãoDeEscolha(escolha,filtrosUtilizados));
                 filtrosUtilizados[i] = identificaCriterio(criterios);
         }
         Pet[] pets = petRepository.buscaPets(criterios);
         return pets;
     }
+
+//    public Pet[] retornaPetsDaconsultaAvançada() {
+//        CriteriosDeBusca criterios = new CriteriosDeBusca();
+//        String[] filtrosUtilizados = new String[3];
+//        int filtrosUsadosCount = 0;
+//
+//        // 1. Pede o critério primário e anota. Esta parte já estava certa.
+//        criterios = retornaPrimeiroCriterioObrigatorio(criterios);
+//        filtrosUtilizados[filtrosUsadosCount++] = identificaCriterio(criterios);
+//
+//        // 2. CORREÇÃO Nº 1: Pergunte a quantidade ANTES do loop.
+//        int quantidadeAdicional = retornaQuantidadeDeCriteriosOpcionais();
+//
+//        // 3. Use a variável no loop.
+//        for (int i = 0; i < quantidadeAdicional; i++) {
+//
+//            // 4. CORREÇÃO Nº 2: A sequência de chamadas explícita.
+//
+//            // a. Peça a ESCOLHA NUMÉRICA ao usuário.
+//            String escolhaNumerica = verificaEscolhaDeNumeroAvançada(filtrosUtilizados);
+//
+//            // b. "Traduza" o número para o NOME do filtro.
+//            String nomeDoFiltro = retornaRelaçãoDeEscolha(escolhaNumerica, filtrosUtilizados);
+//
+//            // c. Agora que sabe o nome, peça o VALOR para aquele filtro.
+//            criterios = retornaCriterioAvançado(criterios, nomeDoFiltro);
+//
+//            // d. Atualize o controle de filtros usados.
+//            filtrosUtilizados[filtrosUsadosCount++] = nomeDoFiltro;
+//        }
+//
+//        Pet[] pets = petRepository.buscaPets(criterios);
+//        return pets;
+//    }
 
     public void mostraConsultaAvançada(Pet[] pets){
         int i = 1;
@@ -79,9 +137,11 @@ public class ConsultaService {
                 }
 
                 if (i == 1) {
-                    criteriosDeBusca.setTipo(Tipo.valueOf(petValidation.validaTipo("Digite o tipo:  ")));
+                    String tipo = cadastroService.pedirEValidarTipo("Digite o tipo:  ");
+                    criteriosDeBusca.setTipo(Tipo.valueOf(tipo));
                 } else {
-                    criteriosDeBusca.setData_de_cadastro(petValidation.validaDataDeCadastro("Digite o ano:  "));
+                    String data = cadastroService.pedirEValidarDataDeCadastro();
+                    criteriosDeBusca.setData_de_cadastro(data);
                 }
 
                 break;
@@ -143,30 +203,38 @@ public class ConsultaService {
         while (true) {
             try {
                 switch (tipo) {
-                    case "Nome ou sobrenome\n":
-                        criteriosDeBusca.setNome(petValidation.validaNome("Digite o nome ou sobrenome:  "));
+                    case "Nome ou sobrenome":
+                        String nome = cadastroService.pedirEValidarNome("Digite o nome ou sobrenome:  ");
+                        criteriosDeBusca.setNome(nome);
                         break;
-                    case "Sexo\n":
-                        criteriosDeBusca.setSexo(Sexo.valueOf(petValidation.validaSexo("Digite o sexo:  ")));
+                    case "Sexo":
+                        String sexo = cadastroService.pedirEValidarSexo("Digite o sexo:  ");
+                        criteriosDeBusca.setSexo(Sexo.valueOf(sexo));
                         break;
-                    case "Endereço\n":
-                        criteriosDeBusca.setCidade(petValidation.validaCidade("Digite a cidade:  "));
-                        criteriosDeBusca.setRua(petValidation.validaRua("Digite a rua:  "));
+                    case "Endereço":
+                        String cidade = cadastroService.pedirEValidarCidade("Digite a cidade:  ");
+                        criteriosDeBusca.setCidade(cidade);
+                        cidade = cadastroService.pedirEValidarRua("Digite a rua:  ");
+                        criteriosDeBusca.setRua(cidade);
                         String opção = consoleUi.pedir("Deseja inserir o número da casa? (S ou N)");
                         if (opção.equalsIgnoreCase("s")) {
-                            criteriosDeBusca.setNum_casa(Integer.parseInt(petValidation.validaNumeroDaCasa("Digite o número da casa:  ")));
+                            cidade = cadastroService.pedirEValidarNumCasa("Digite o número da casa:  ");
+                            criteriosDeBusca.setNum_casa(Integer.parseInt(cidade));
                         } else if (!opção.equalsIgnoreCase("n")) {
                             throw new IllegalArgumentException("Digite S (sim) ou N (não) para a pergunta!");
                         }
                         break;
-                    case "Idade\n":
-                        criteriosDeBusca.setIdade(Double.parseDouble(petValidation.validaIdade("Digite a idade:  ")));
+                    case "Idade":
+                        String idade = cadastroService.pedirEValidarIdade("Digite a idade:  ");
+                        criteriosDeBusca.setIdade(Double.parseDouble(idade));
                         break;
-                    case "Peso\n":
-                        criteriosDeBusca.setPeso(Double.parseDouble(petValidation.validaPeso("Digite o peso:  ")));
+                    case "Peso":
+                        String peso = cadastroService.pedirEValidarPeso("Digite o peso:  ");
+                        criteriosDeBusca.setPeso(Double.parseDouble(peso));
                         break;
-                    case "Raça\n":
-                        criteriosDeBusca.setRace(petValidation.validaRaça("Digite a raça:  "));
+                    case "Raça":
+                        String raça = cadastroService.pedirEValidarRaça("Digite a raça:  ");
+                        criteriosDeBusca.setRace(raça);
                         break;
                 }
                 break;
@@ -184,35 +252,45 @@ public class ConsultaService {
         while (true){
             switch (i){
                 case 1:
-                    criteriosDeBusca.setNome(petValidation.validaNome("Digite o nome ou sobrenome:  "));
+                    String nome = cadastroService.pedirEValidarNome("Digite o nome ou sobrenome:  ");
+                    criteriosDeBusca.setNome(nome);
                     break;
                 case 2:
-                    criteriosDeBusca.setTipo(Tipo.valueOf(petValidation.validaTipo("Digite o tipo do pet:  ")));
+                    String tipo = cadastroService.pedirEValidarTipo("Digite o tipo do pet:  ");
+                    criteriosDeBusca.setTipo(Tipo.valueOf(tipo));
                     break;
                 case 3:
-                    criteriosDeBusca.setSexo(Sexo.valueOf(petValidation.validaSexo("Digite o sexo:  ")));
+                    String sexo = cadastroService.pedirEValidarSexo("Digite o sexo:  ");
+                    criteriosDeBusca.setSexo(Sexo.valueOf(sexo));
                     break;
                 case 4:
-                    criteriosDeBusca.setCidade(petValidation.validaCidade("Digite a cidade:  "));
-                    criteriosDeBusca.setRua(petValidation.validaRua("Digite a rua:  "));
+                    String cidade = cadastroService.pedirEValidarCidade("Digite a cidade:  ");
+                    criteriosDeBusca.setCidade(cidade);
+                    cidade = cadastroService.pedirEValidarRua("Digite a rua:  ");
+                    criteriosDeBusca.setRua(cidade);
                     String opção = consoleUi.pedir("Deseja inserir o número da casa? (S ou N)");
                     if (opção.equalsIgnoreCase("s")) {
-                        criteriosDeBusca.setNum_casa(Integer.parseInt(petValidation.validaNumeroDaCasa("Digite o número da casa:  ")));
+                        cidade = cadastroService.pedirEValidarNumCasa("Digite o número da casa:  ");
+                        criteriosDeBusca.setNum_casa(Integer.parseInt(cidade));
                     } else if (!opção.equalsIgnoreCase("n")) {
                         throw new IllegalArgumentException("Digite S (sim) ou N (não) para a pergunta!");
                     }
                     break;
                 case 5:
-                    criteriosDeBusca.setIdade(Double.parseDouble(petValidation.validaIdade("Digite a idade:  ")));
+                    String idade = cadastroService.pedirEValidarIdade("Digite a idade:  ");
+                    criteriosDeBusca.setIdade(Double.parseDouble(idade));
                     break;
                 case 6:
-                    criteriosDeBusca.setPeso(Double.parseDouble(petValidation.validaPeso("Digite o peso:  ")));
+                    String peso = cadastroService.pedirEValidarPeso("Digite o peso:  ");
+                    criteriosDeBusca.setPeso(Double.parseDouble(peso));
                     break;
                 case 7:
-                    criteriosDeBusca.setRace(petValidation.validaRaça("Digite a raça:  "));
+                    String raça = cadastroService.pedirEValidarRaça("Digite a raça:  ");
+                    criteriosDeBusca.setRace(raça);
                     break;
                 case 8:
-                    criteriosDeBusca.setData_de_cadastro(petValidation.validaDataDeCadastro("Digite a data de cadastro do Pet"));
+                    String dataDeCadastro = cadastroService.pedirEValidarDataDeCadastro();
+                    criteriosDeBusca.setData_de_cadastro(dataDeCadastro);
                     break;
             }
             break;
@@ -272,7 +350,8 @@ public class ConsultaService {
         while (true){
             try {
                 String partes[] = retornaPerguntasPossiveis(filtrosUtilizados).split("\n");
-                escolha = consoleUi.pedir(retornaPerguntasPossiveis(filtrosUtilizados));
+                String perguntas = retornaPerguntasPossiveis(filtrosUtilizados);
+                escolha = consoleUi.pedir(perguntas);
                 int testeAux = Integer.parseInt(escolha.trim());
                 if (testeAux < 1 || testeAux > partes.length){
                     throw new IllegalArgumentException("Opção inválida!");
@@ -307,5 +386,74 @@ public class ConsultaService {
         return escolha;
     }
 
+
+    public boolean verificaConsulta(Pet[] pets){
+        if (pets.length == 0){
+            consoleUi.printar("Não existem registros de Pets com esses filtros!");
+            return false;
+        }
+        return true;
+    }
+
+//    private void pedirEAdicionarUmFiltro(CriteriosDeBusca criterios, String[] filtrosUsados, int totalUsados) {
+//        // Array mestre com os nomes exatos dos filtros
+//        final String[] OPCOES_TOTAIS = {"Nome", "Sexo", "Idade", "Peso", "Raça", "Endereço"};
+//
+//        while (true) { // Loop para garantir que o usuário escolha uma opção nova e válida
+//
+//            // --- Etapa 1: Gerar as opções disponíveis para ESTA rodada ---
+//            // (Lógica do antigo 'retornaPerguntasPossiveis')
+//            String[] opcoesDisponiveis = gerarOpcoesDisponiveis(OPCOES_TOTAIS, filtrosUsados, totalUsados);
+//            if (opcoesDisponiveis.length == 0) {
+//                consoleUi.printar("Não há mais filtros disponíveis.");
+//                return; // Sai do método se não houver mais o que escolher
+//            }
+//
+//            // --- Etapa 2: Formatar e exibir o menu ---
+//            String menuTexto = (opcoesDisponiveis);
+//            int escolhaNum = consoleUi.pedirNumero(menuTexto, opcoesDisponiveis.length);
+//
+//            // --- Etapa 3: A "Tradução" direta e segura ---
+//            String filtroEscolhido = opcoesDisponiveis[escolhaNum - 1];
+//
+//            // --- Etapa 4: Pedir o valor para o filtro traduzido ---
+//            // (Lógica do antigo 'retornaCriterioAvançado')
+//            try {
+//                switch (filtroEscolhido) {
+//                    case "Nome":
+//                        criterios.setNome(petValidation.validaNome(consoleUi.pedir("Digite o nome: ")));
+//                        break;
+//                    case "Sexo":
+//                        criterios.setSexo(Sexo.valueOf(petValidation.validaSexo(consoleUi.pedir("Digite o sexo (Macho ou Femea): "))));
+//                        break;
+//                    case "Idade":
+//                        criterios.setIdade(Double.parseDouble(petValidation.validaIdade(consoleUi.pedir("Digite a idade: "))));
+//                        break;
+//                    case "Peso":
+//                        criterios.setPeso(Double.parseDouble(petValidation.validaPeso(consoleUi.pedir("Digite o peso (KG): "))));
+//                        break;
+//                    case "Raça":
+//                        criterios.setRace(petValidation.validaRaça(consoleUi.pedir("Digite a raça: ")));
+//                        break;
+//                    case "Endereço":
+//                        String cidade = petValidation.validaCidade(consoleUi.pedir("Digite a cidade: "));
+//                        String rua = petValidation.validaRua(consoleUi.pedir("Digite a rua: "));
+//                        criterios.setCidade(cidade);
+//                        criterios.setRua(rua);
+//                        // Lógica para número opcional
+//                        break;
+//                }
+//
+//                // Se o switch terminou sem erro, a escolha foi um sucesso.
+//                // Adiciona ao controle e sai do loop de tentativa.
+//                filtrosUsados[totalUsados] = filtroEscolhido;
+//                break;
+//
+//            } catch (IllegalArgumentException e) {
+//                consoleUi.printar("Erro de validação: " + e.getMessage());
+//                // O loop while(true) vai recomeçar, pedindo uma nova escolha de filtro.
+//            }
+//        }
+//    }
 
 }

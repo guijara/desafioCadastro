@@ -37,6 +37,9 @@ public class CriteriosDeBusca {
     }
 
     public String getData_de_cadastro() {
+        if (this.data_de_cadastro == null) {
+            return null;
+        }
         return data_de_cadastro.substring(0,6);
     }
 
